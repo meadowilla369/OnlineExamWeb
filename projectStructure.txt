@@ -1,0 +1,32 @@
+online-exam-system/
+├── frontend/                 # React Frontend
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── common/
+│   │   │   ├── student/
+│   │   │   ├── teacher/
+│   │   │   └── admin/
+│   │   ├── pages/
+│   │   ├── services/
+│   │   ├── utils/
+│   │   ├── hooks/
+│   │   ├── context/
+│   │   ├── styles/
+│   │   └── App.js
+│   └── package.json
+├── backend/                  # Node.js Backend
+│   ├── src/
+│   │   ├── controllers/
+│   │   ├── models/
+│   │   ├── routes/
+│   │   ├── middleware/
+│   │   ├── services/
+│   │   ├── utils/
+│   │   └── config/
+│   ├── uploads/
+│   └── package.json
+└── database/                 # MySQL Scripts
+    ├── schema.sql
+    ├── seed.sql
+    └── procedures.sql
