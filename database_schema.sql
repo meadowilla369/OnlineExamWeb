@@ -1,0 +1,14 @@
+USE online_exam_web;
+
+CREATE TABLE thisinh (
+    SBD VARCHAR(20) PRIMARY KEY,
+    ho_va_ten VARCHAR(100) NOT NULL,
+    nam_sinh DATE NOT NULL,
+    nghe_nghiep VARCHAR(50) NOT NULL,
+    chuc_vu VARCHAR(50) NOT NULL,
+    don_vi_cong_ty VARCHAR(100) NOT NULL,
+    bo_phan VARCHAR(50) NOT NULL,
+    MK VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+)
