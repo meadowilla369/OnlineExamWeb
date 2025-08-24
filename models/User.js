@@ -1,20 +1,20 @@
 const db = require('../config/database');
 
-class ThiSinh {
-  static async create(thiSinhData) {
+class User {
+  static async create(UserData) {
     try {
       const [result] = await db.execute(
-        `INSERT INTO thisinh (SBD, ho_va_ten, nam_sinh, nghe_nghiep, chuc_vu, don_vi_cong_ty, bo_phan, MK) 
+        `INSERT INTO User (SBD, ho_va_ten, nam_sinh, nghe_nghiep, chuc_vu, don_vi_cong_ty, bo_phan, MK) 
          VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
         [
-          thiSinhData.SBD,
-          thiSinhData.ho_va_ten,
-          thiSinhData.nam_sinh,
-          thiSinhData.nghe_nghiep,
-          thiSinhData.chuc_vu,
-          thiSinhData.don_vi_cong_ty,
-          thiSinhData.bo_phan,
-          thiSinhData.MK
+          UserData.SBD,
+          UserData.ho_va_ten,
+          UserData.nam_sinh,
+          UserData.nghe_nghiep,
+          UserData.chuc_vu,
+          UserData.don_vi_cong_ty,
+          UserData.bo_phan,
+          UserData.MK
         ]
       );
       return result;
@@ -26,7 +26,7 @@ class ThiSinh {
   static async findBySBD(SBD) {
     try {
       const [rows] = await db.execute(
-        'SELECT * FROM thisinh WHERE SBD = ?',
+        'SELECT * FROM User WHERE SBD = ?',
         [SBD]
       );
       return rows[0];
@@ -35,11 +35,10 @@ class ThiSinh {
     }
   }
 
-  static async findAll(limit = 50, offset = 0) {
+  static async findAll() {
     try {
       const [rows] = await db.execute(
-        'SELECT SBD, ho_va_ten, nam_sinh, nghe_nghiep, chuc_vu, don_vi_cong_ty, bo_phan, created_at FROM thisinh LIMIT ? OFFSET ?',
-        [limit, offset]
+        'SELECT * FROM User ORDER BY created_at DESC',
       );
       return rows;
     } catch (error) {
@@ -66,7 +65,7 @@ class ThiSinh {
       values.push(SBD);
       
       const [result] = await db.execute(
-        `UPDATE thisinh SET ${fields.join(', ')} WHERE SBD = ?`,
+        `UPDATE User SET ${fields.join(', ')} WHERE SBD = ?`,
         values
       );
       return result;
@@ -78,7 +77,7 @@ class ThiSinh {
   static async delete(SBD) {
     try {
       const [result] = await db.execute(
-        'DELETE FROM thisinh WHERE SBD = ?',
+        'DELETE FROM User WHERE SBD = ?',
         [SBD]
       );
       return result;
@@ -89,7 +88,7 @@ class ThiSinh {
 
   static async count() {
     try {
-      const [rows] = await db.execute('SELECT COUNT(*) as total FROM thisinh');
+      const [rows] = await db.execute('SELECT COUNT(*) as total FROM User');
       return rows[0].total;
     } catch (error) {
       throw error;
@@ -97,4 +96,4 @@ class ThiSinh {
   }
 }
 
-module.exports = ThiSinh;
+module.exports = User;

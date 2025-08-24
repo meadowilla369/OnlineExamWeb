@@ -1,47 +1,25 @@
 const express = require('express');
-const cors = require('cors');
-require('dotenv').config();
+const connection = require('./config/database');
+const thiSinhRoutes = require('./routes/AuthRoutes');
 
-const thiSinhRoutes = require('./routes/thiSinh');
+const cookieParser = require('cookie-parser');
+const cors = require('cors'); 
+const dotenv = require('dotenv');
 
 const app = express();
+dotenv.config();
 
 // Middleware
 app.use(cors());
-app.use(express.json({ limit: '10mb' }));
-app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(express.json());
 
 // Routes
-app.use('/api/thisinh', thiSinhRoutes);
-
-// Health check endpoint
-app.get('/api/health', (req, res) => {
-  res.json({
-    success: true,
-    message: 'Server is running',
-    timestamp: new Date().toISOString()
-  });
-});
-
-// Error handling middleware
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).json({
-    success: false,
-    message: 'Something went wrong!'
-  });
-});
-
-// 404 handler
-app.use((req, res) => {
-  res.status(404).json({
-    success: false,
-    message: 'Route not found'
-  });
-});
+app.use('/api/Users', thiSinhRoutes); 
 
 app.listen(process.env.PORT, () => {
   console.log(`Server is running on port ${process.env.PORT}`);
 });
 
 module.exports = app;
+

@@ -1,35 +1,22 @@
 const jwt = require('jsonwebtoken');
-const ThiSinh = require('../models/ThiSinh');
 
-const authMiddleware = async (req, res, next) => {
-  try {
-    const token = req.header('Authorization')?.replace('Bearer ', '');
+function authenticateToken(req, res, next) {
+
+  // get auth header - The Authorization header is commonly used to send authenitcation tokens
+  const authHeader = req.headers['authorization'];
+  
+  // Extract token from "Bearer <token>"
+  const token = authHeader && authHeader.split(' ')[1];
+  if (!token) return res.status(401).json({message: "No token provided"});
+  
+  // Verify token
+  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+    if (err) return res.status(403).json({message: "Invalid token"});
     
-    if (!token) {
-      return res.status(401).json({ 
-        success: false, 
-        message: 'Access token is required' 
-      });
-    }
-
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const thiSinh = await ThiSinh.findBySBD(decoded.SBD);
-    
-    if (!thiSinh) {
-      return res.status(401).json({ 
-        success: false, 
-        message: 'Invalid token' 
-      });
-    }
-
-    req.thiSinh = thiSinh;
+    // Attach user info to request 
+    req.user = user;
     next();
-  } catch (error) {
-    res.status(401).json({ 
-      success: false, 
-      message: 'Invalid token' 
-    });
-  }
-};
+  });
+}
 
-module.exports = authMiddleware;
+module.exports = authenticateToken;
